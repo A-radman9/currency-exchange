@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>حاسبة صرف العملات للكاشير | حساب الباقي بالريال السعودي</title>
+    <meta name="description" content="حاسبة بسيطة وسريعة للكاشير لتحويل العملة الأجنبية للريال السعودي وحساب الباقي للعميل أو الباقي عليه بدقة تامة." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💵</text></svg>" />
+  </head>
+  <body>
+    <div class="simple-app-wrapper">
+      <!-- البطاقة الرئيسية البسيطة للكاشير -->
+      <main class="simple-calc-card">
+        <header class="simple-header">
+          <div class="header-icon">💱</div>
+          <div class="header-text">
+            <h1 class="main-title">حاسبة الكاشير لصرف العملات</h1>
+            <p class="sub-title">عشان تحسب الباقي صح وما تلخبط بالصندوق</p>
+          </div>
+        </header>
+
+        <!-- 1. اختيار العملة وسعر الصرف -->
+        <div class="form-row">
+          <label class="input-label" for="currencySelect">العملة اللي مع الزبون:</label>
+          <div class="currency-picker-row">
+            <select id="currencySelect" class="form-select">
+              <option value="USD" data-rate="3.75" selected>🇺🇸 دولار أمريكي (USD)</option>
+              <option value="EUR" data-rate="4.05">🇪🇺 يورو أوروبي (EUR)</option>
+              <option value="AED" data-rate="1.02">🇦🇪 درهم إماراتي (AED)</option>
+              <option value="KWD" data-rate="12.10">🇰🇼 دينار كويتي (KWD)</option>
+              <option value="BHD" data-rate="9.95">🇧🇭 دينار بحريني (BHD)</option>
+              <option value="OMR" data-rate="9.75">🇴🇲 ريال عماني (OMR)</option>
+              <option value="QAR" data-rate="1.03">🇶🇦 ريال قطري (QAR)</option>
+            </select>
+
+            <div class="rate-preview-pill">
+              <span class="rate-sublabel">سعر الصرف المعتمد:</span>
+              <span class="rate-fixed-value" id="fixedRateDisplay">3.75</span>
+              <span class="rate-unit">ر.س</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. حقلي الإدخال الأساسيين -->
+        <div class="inputs-two-col">
+          <!-- مبلغ الفاتورة -->
+          <div class="form-group">
+            <label class="input-label" for="billInput">
+              <span>كم حساب الفاتورة؟</span>
+              <span class="unit-badge">بالريال السعودي</span>
+            </label>
+            <div class="input-box">
+              <input 
+                type="number" 
+                id="billInput" 
+                class="field-input" 
+                placeholder="0.00" 
+                step="0.01" 
+                min="0"
+                inputmode="decimal"
+                autofocus
+              />
+              <span class="field-unit">ريال</span>
+            </div>
+          </div>
+
+          <!-- المبلغ المستلم من العميل -->
+          <div class="form-group">
+            <label class="input-label" for="foreignInput">
+              <span>كم عطاك الزبون؟</span>
+              <span class="unit-badge" id="foreignUnitBadge">بالدولار ($)</span>
+            </label>
+            <div class="input-box">
+              <input 
+                type="number" 
+                id="foreignInput" 
+                class="field-input field-input-accent" 
+                placeholder="0.00" 
+                step="0.01" 
+                min="0"
+                inputmode="decimal"
+              />
+              <span class="field-unit" id="foreignUnitText">$</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- أزرار فئات العملة السريعة -->
+        <div class="quick-cash-row">
+          <span class="quick-cash-label">مبالغ سريعة:</span>
+          <div class="quick-cash-buttons" id="quickCashButtons">
+            <!-- تعبأ تلقائياً للعملة: 10, 20, 50, 100 -->
+          </div>
+        </div>
+
+        <!-- 3. بطاقة النتيجة المباشرة والصريحة -->
+        <div class="result-card-container">
+          <div id="resultCard" class="result-card state-neutral">
+            <div class="result-header-line">
+              <span class="result-status-icon" id="statusIcon">⏳</span>
+              <span class="result-status-title" id="statusTitle">حط مبلغ الفاتورة والمبلغ اللي استلمته</span>
+            </div>
+
+            <!-- عرض الباقي بالريال (وبالعملة الأجنبية إذا باقي عليه) -->
+            <div class="result-dual-grid" id="resultGrid">
+              <!-- بالريال السعودي -->
+              <div class="result-currency-box box-sar" id="boxSar">
+                <span class="box-label" id="sarBoxLabel">🇸🇦 بالريال السعودي</span>
+                <div class="box-amount-row">
+                  <span class="box-num" id="sarAmountDisplay">0.00</span>
+                  <span class="box-unit">ريال</span>
+                </div>
+              </div>
+
+              <!-- بالعملة الأجنبية (يظهر فقط إذا باقي عليه) -->
+              <div class="result-currency-box box-foreign" id="boxForeign">
+                <span class="box-label" id="foreignBoxLabel">🇺🇸 بالعملة الأجنبية</span>
+                <div class="box-amount-row">
+                  <span class="box-num" id="foreignAmountDisplay">0.00</span>
+                  <span class="box-unit" id="foreignBoxUnit">$</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- التفقيط بالعربي الصريح لمنع أي التباس -->
+            <div class="result-tafqeet" id="tafqeetDisplay">
+              صفر ريال سعودي فقط لا غير
+            </div>
+
+            <!-- تفصيل المعادلة البسيطة للتأكد السريع -->
+            <div class="result-math-explanation" id="mathExplanation">
+              استلمت منه: 0 = 0 ريال  |  الفاتورة: 0 ريال
+            </div>
+          </div>
+        </div>
+
+        <!-- أزرار التحكم البسيطة -->
+        <div class="bottom-controls">
+          <button type="button" class="btn-clear" id="btnClear">
+            🔄 مسح وابدأ من جديد (Esc)
+          </button>
+        </div>
+      </main>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
