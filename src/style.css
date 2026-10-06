@@ -219,6 +219,22 @@ body {
   direction: ltr;
   text-align: right;
   transition: all 0.15s ease;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* إخفاء أسهم الزيادة والنقصان في حقول الأرقام */
+.field-input::-webkit-inner-spin-button,
+.field-input::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 .field-input:focus {
