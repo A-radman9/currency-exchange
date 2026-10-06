@@ -125,7 +125,8 @@ function calculate() {
     boxForeign.style.display = 'flex'; // إظهار الصندوقين معاً
 
     const dueSAR = (Math.abs(diffHalalas) / 100).toFixed(2);
-    const dueForeign = rate > 0 ? ((Math.abs(diffHalalas) / 100) / rate).toFixed(2) : '0.00';
+    // تقريب العملة الأجنبية للأعلى دائماً لضمان عدم نقص أي هللة على الكاشير
+    const dueForeign = rate > 0 ? (Math.ceil(((Math.abs(diffHalalas) / 100) / rate) * 100) / 100).toFixed(2) : '0.00';
     const tafqeet = tafqeetSAR(Math.abs(diffHalalas) / 100);
     const formula = `استلمت منه ${foreignVal} ${symbol} (تطلع ${totalSARFormatted} ريال) - الفاتورة ${billFormatted} ريال = باقي عليه ${dueSAR} ريال (أو ${dueForeign} ${symbol})`;
 
